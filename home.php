@@ -1,5 +1,5 @@
 <?php
-require 'includes/dbconn.php';
+    require 'includes/dbconn.php';
 ?>
 
 <!DOCTYPE html>
@@ -10,8 +10,6 @@ require 'includes/dbconn.php';
     <?php include('dbconn.php'); ?>
     <?php include('session.php'); ?>
 
-    <!--<script src="vendors/jquery-1.9.1.min.js"></script>-->
-
     <!--CSS Bootstrap CDN-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
@@ -20,12 +18,12 @@ require 'includes/dbconn.php';
 
     <!--Styles for Comment Cards-->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    
+
     <!--Alert JS-->
     <script src="js/alert.js"></script>
     <!--Alert CSS-->
     <link rel="stylesheet" href="css/alert.css">
-    
+
     <!--AJAX-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <style>
@@ -161,87 +159,84 @@ require 'includes/dbconn.php';
 </head>
 
 <body>
-    <h1>Post and Comment System</h1>
-    
-    <h1>Welcome - <?php echo $fullname; ?></h1>
-    
-    <!-- Upload Button Trigger Modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Upload
-    </button>
+    <div class="container">
+        <h1>Post and Comment System</h1>
 
-    <!-- Modal Form-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Upload a Post</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h2>Welcome - <?php echo $fullname; ?></h2>
+
+        <!-- Upload Button Trigger Modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Upload
+        </button>
+
+        <!--Logout Button-->
+        <a href="logout.php"><button type="button" class="btn btn-primary">Logout</button></a>
+
+        <!-- Modal Form-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Upload a Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="uploadPost" method="POST">
+                        <div class="modal-body">
+
+                            <div id="errorMessage" class="alert alert-warning d-none"></div>
+
+                            <div class="mb-3">
+                                <label for="">Section Title</label>
+                                <input type="text" name="section_title" class="form-control" value="" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="">Content of the post</label>
+                                <textarea class="form-control" name="content" rows="5"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="">Image</label>
+                                <input type="file" name="image" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary me-1">Upload</button>
+                        </div>
+                    </form>
                 </div>
-                <form id="uploadPost" method="POST">
-                    <div class="modal-body">
-
-                        <div id="errorMessage" class="alert alert-warning d-none"></div>
-
-                        <div class="mb-3">
-                            <label for="">Section Title</label>
-                            <input type="text" name="section_title" class="form-control" value="" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="">Content of the post</label>
-                            <textarea class="form-control" name="content" rows="5"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="">Image</label>
-                            <input type="file" name="image" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Upload</button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
 
-    <!--Logout Button-->
-    <a href="logout.php"><button type="button" class="btn btn-primary">Logout</button></a>
+        <!--Search-->
+        <div class="input-group mb-3 mt-3">
+            <input type="text" class="form-control" placeholder="Search in conversation" aria-label="search-subject"
+                aria-describedby="search-subject">
+            <button class="btn btn-primary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+        </div>
 
-    <!--Search-->
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search in conversation" aria-label="search-subject"
-            aria-describedby="search-subject">
-        <button class="btn btn-primary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
-    </div>
-    
-    <!--List of subjects-->
-    <div class="btn-group">
-      <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        List of Subjects
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Menu item</a></li>
-        <li><a class="dropdown-item" href="#">Menu item</a></li>
-        <li><a class="dropdown-item" href="#">Menu item</a></li>
-      </ul>
-    </div>
+        <!--List of subjects-->
+        <div class="btn-group mb-3">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                List of Subjects
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Menu item</a></li>
+                <li><a class="dropdown-item" href="#">Menu item</a></li>
+                <li><a class="dropdown-item" href="#">Menu item</a></li>
+            </ul>
+        </div>
 
-    <!--Content of the Post-->
-    <h2 class="text-center">Subject: This is a subject title example</h2>
+        <!--Content of the Post-->
 
-
-    <?php	
+        <?php	
 		$query = mysqli_query($conn,"SELECT *,UNIX_TIMESTAMP() - date_created AS TimeSpent from post LEFT JOIN user on user.user_id = post.user_id order by post_id DESC")or die(mysqli_error());
 		while($post_row=mysqli_fetch_array($query)){
 		    $id = $post_row['post_id'];	
 		    $upid = $post_row['user_id'];	
 		    $posted_by = $post_row['firstname']." ".$post_row['lastname'];
 	?>
-    <a style="text-decoration:none; float:right;" href="deletepost.php<?php echo '?id='.$id; ?>"><button
-            class="btn btn-danger">Delete Post</button></a>
-    <p>Posted by:
-        <a href="#"> <?php echo $posted_by; ?></a>
-        -
+        <a style="text-decoration:none; float:right;" href="deletepost.php<?php echo '?id='.$id; ?>"><button
+                class="btn btn-danger">Delete Post</button></a>
         <?php				
 								$days = floor($post_row['TimeSpent'] / (60 * 60 * 24));
 								$remainder = $post_row['TimeSpent'] % (60 * 60 * 24);
@@ -256,55 +251,51 @@ require 'includes/dbconn.php';
 								elseif($days == 0 && $hours == 0)
 								echo $minutes.' minutes ago';
 		?>
-        <br>
-        <br>
-        <?php echo $post_row['content']; ?>
-    </p>
 
-    <!--The image screenshot of the post-->
-    <img src="images/screenshot2.jpg" class="img-fluid" alt="...">
+        </p>
 
-    <div id="container">
-        <!--POST A PICTURE AND TEXT-->
-        <!--<form method="post"> -->
-        <!--<textarea name="post_content" rows="7" cols="64" style="" placeholder=".........Write Someting........" required></textarea>-->
-        <!--<br>-->
-        <!--<button name="post">&nbsp;POST</button>-->
-        <!--<br>-->
-        <!--<hr>-->
-        <!--</form>-->
-
-
-
-        <form method="post">
-            <div class="mb-3">
-                <label for="commentForm" class="form-label">Comment</label>
-                <textarea name="comment_content" class="form-control" id="commentForm" rows="3" cols="11" placeholder="Write a comment..." required></textarea>
-                <br>
-
-                <label for="imageComment">Image</label>
-                <input type="file" name="image" class="form-control" id="imageComment"/>
-                <br>
-                
-                <button type="submit" name="comment" class="btn btn-primary"><i class="bi bi-send-fill"></i> Send</button>
+        <div class="card mx-5">
+            <div class="card-body m-5">
+                <h2 class="card-title text-center m-3">Subject: This is a subject title example</h2>
+                <p class="card-title">Posted by: <?php echo $posted_by; ?></p>
+                <p class="card-text"><?php echo $post_row['content']; ?></p>
+                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                <img src="images/screenshot2.jpg" class="card-img-bottom img-thumbnail" alt="...">
             </div>
-            
-            <input type="hidden" name="id" value="<?php echo $id; ?>">
-            <!--<textarea name="comment_content" rows="2" cols="44" style="" placeholder=".........Type your comment here........" required></textarea><br>-->
-            <!--<input type="submit" name="comment">-->
-        </form>
+        </div>
 
-        </br>
 
-        <?php 
+
+        <div id="container">
+            <form method="post">
+                <div class="mb-3 m-5">
+                    <h2 for="commentForm" class="form-label">Post a comment</h2>
+                    <textarea name="comment_content" class="form-control" id="commentForm" rows="3" cols="11"
+                        placeholder="Write a comment..." required></textarea>
+                    <br>
+
+                    <label for="imageComment">Image</label>
+                    <input type="file" name="image" class="form-control" id="imageComment" />
+                    <br>
+
+                    <button type="submit" name="comment" class="btn btn-primary"><i class="bi bi-send-fill"></i>
+                        Send</button>
+                </div>
+
+                <input type="hidden" name="id" value="<?php echo $id; ?>">
+            </form>
+
+            </br>
+
+            <?php 
 								$comment_query = mysqli_query($conn,"SELECT * ,UNIX_TIMESTAMP() - date_posted AS TimeSpent FROM comment LEFT JOIN user on user.user_id = comment.user_id where post_id = '$id'") or die (mysqli_error());
 								while ($comment_row=mysqli_fetch_array($comment_query)){
     								$comment_id = $comment_row['comment_id'];
     								$comment_by = $comment_row['firstname']." ".  $comment_row['lastname'];
 							?>
-        <br><?php echo $comment_by; ?> - <?php echo $comment_row['content']; ?>
-        <br>
-        <?php				
+            <br><?php echo $comment_by; ?> - <?php echo $comment_row['content']; ?>
+            <br>
+            <?php				
 								$days = floor($comment_row['TimeSpent'] / (60 * 60 * 24));
 								$remainder = $comment_row['TimeSpent'] % (60 * 60 * 24);
 								$hours = floor($remainder / (60 * 60));
@@ -318,24 +309,24 @@ require 'includes/dbconn.php';
 								elseif($days == 0 && $hours == 0)
 								echo $minutes.' minutes ago';
 							?>
-        <br>
-        <?php
+            <br>
+            <?php
 							}
 							?>
 
-        <?php 
+            <?php 
 					if ($u_id = $id){
 					?>
 
 
 
-        <?php }else{ ?>
+            <?php }else{ ?>
 
-        <?php
+            <?php
 					} } ?>
 
 
-        <?php
+            <?php
 								if (isset($_POST['post'])){
 								$post_content  = $_POST['post_content'];
 								
@@ -344,7 +335,7 @@ require 'includes/dbconn.php';
 								}
 							?>
 
-        <?php
+            <?php
 							
 								if (isset($_POST['comment'])){
 								$comment_content = $_POST['comment_content'];
@@ -355,27 +346,26 @@ require 'includes/dbconn.php';
 								}
 							?>
 
+            <!-- Comments -->
+            <div class="media mx-5">
+                <h2 for="commentForm" class="form-label">Comments</h2>
+                <!--Picture of the user-->
+                <img width="50px" height="50px" style="border-radius: 100px;"
+                    src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
+                <div class="media-body">
+                    <!--Name of the commenter-->
+                    <h4 class="media-heading">John Doe</h4>
+                    <!--Comment of the user-->
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem
+                        ipsum dolor sit amet, consectetur adipiscing elit.
+                    </p>
 
-        <!--List of Comments-->
-
-        <!-- COMMENT 1 - START -->
-        <div class="media">
-
-            <!--Picture of the user-->
-            <img width="50px" height="50px" style="border-radius: 100px;" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
-            <div class="media-body">
-                <!--Name of the commenter-->
-                <h4 class="media-heading">John Doe</h4>
-                <!--Comment of the user-->
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem
-                    ipsum dolor sit amet, consectetur adipiscing elit.
-                </p>
-
-                <!--Timestamp when did this comment-->
-                <ul class="list-unstyled list-inline media-detail pull-left">
-                    <li>May 27, 2015 at 3:14am</li>
-                </ul>
+                    <!--Timestamp when did this comment-->
+                    <ul class="list-unstyled list-inline media-detail pull-left">
+                        <li>May 27, 2015 at 3:14am</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -386,12 +376,12 @@ require 'includes/dbconn.php';
 
         <!--Uploading a Post-->
         <script>
-            $(document).on('submit', '#uploadPost', function(e) {
+        $(document).on('submit', '#uploadPost', function(e) {
             e.preventDefault();
-    
+
             var formData = new FormData(this);
             formData.append("upload_post", true);
-    
+
             $.ajax({
                 type: "POST",
                 url: "code.php",
@@ -399,30 +389,23 @@ require 'includes/dbconn.php';
                 processData: false,
                 contentType: false,
                 success: function(response) {
-    
+
                     var res = jQuery.parseJSON(response);
                     if (res.status == 422) {
                         $('#errorMessage').removeClass('d-none');
                         $('#errorMessage').text(res.message);
-    
                     } else if (res.status == 200) {
-    
                         $('#errorMessage').addClass('d-none');
                         $('#exampleModal').modal('hide');
                         $('#uploadPost')[0].reset();
-    
-                        // alertify.set('notifier', 'position', 'top-right');
-                        // alertify.success(res.message);
-    
-                        // $('#tables').load(location.href + " #tables");
-    
                     } else if (res.status == 500) {
                         alert(res.message);
                     }
                 }
             });
-    
+
         });
         </script>
 </body>
+
 </html>

@@ -9,5 +9,4 @@
     $member_row = mysqli_fetch_array($member_query);
     
     $fullname = $member_row['firstname']." ".$member_row['lastname'];
-    $testname = "Test Name";
 ?>
