@@ -7,9 +7,9 @@
         mysqli_query($conn,"insert into comment (content,user_id,post_id) values ('$comment','$user_id','$content')") or die (mysqli_error());
         
 ?>
-    <script>
-        window.location = 'home.php';
-    </script>
+<script>
+window.location = 'home.php';
+</script>
 
 <?php
     }

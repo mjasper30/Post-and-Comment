@@ -256,11 +256,11 @@
 
         <div class="card mx-5">
             <div class="card-body m-5">
-                <h2 class="card-title text-center m-3">Subject: This is a subject title example</h2>
-                <p class="card-title">Posted by: <?php echo $posted_by; ?></p>
+                <h2 class="card-title text-center m-5">Subject: This is a subject title example</h2>
+                <p class="card-title fw-bold">Posted by: Jasper Macaraeg <?php echo $posted_by; ?></p>
+                <p class="card-text"><small class="text-body-secondary">June 15, 2023 at 3:14pm</small></p>
                 <p class="card-text"><?php echo $post_row['content']; ?></p>
-                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-                <img src="images/screenshot2.jpg" class="card-img-bottom img-thumbnail" alt="...">
+                <img src="images/screenshot2.jpg" class="card-img-bottom img-thumbnail" alt="..." target="_blank">
             </div>
         </div>
 
