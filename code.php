@@ -1,8 +1,10 @@
 <?php
 require 'includes/dbconn.php';
+include('session.php');
 
 if(isset($_POST['upload_post']))
 {
+    $user_id=$_SESSION['id'];
     $section_title = mysqli_real_escape_string($conn, $_POST['section_title']);
     $content = mysqli_real_escape_string($conn, $_POST['content']);
     $img=$_FILES["image"]["name"];
@@ -24,7 +26,7 @@ if(isset($_POST['upload_post']))
         return false;
     }
 
-    $query = "INSERT INTO `post`(`section_title`, `content`, `picture`) VALUES ('$section_title','$content','$image')";
+    $query = "INSERT INTO `post`(`user_id`, `section_title`, `content`, `picture`) VALUES ('$user_id','$section_title','$content','$image')";
     $query_run = mysqli_query($conn, $query);
 
     if($query_run)

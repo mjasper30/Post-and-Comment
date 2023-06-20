@@ -160,7 +160,7 @@
 
 <body>
     <div class="container">
-        <h1>Post and Comment System</h1>
+        <h1 class="text-center">Post and Comment System</h1>
 
         <h2>Welcome - <?php echo $fullname; ?></h2>
 
@@ -174,7 +174,7 @@
 
         <!-- Modal Form-->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Upload a Post</h5>
@@ -219,10 +219,27 @@
                 aria-expanded="false">
                 List of Subjects
             </button>
+            <?php
+            $query = "SELECT post_id, section_title FROM `post`";
+            $result = mysqli_query($conn, $query);
+
+            // Check if the query was successful
+            if (!$result) {
+                die("Database query failed.");
+            }
+
+            $options = '';
+
+            while ($row = mysqli_fetch_assoc($result)) {
+                $id = $row['post_id'];
+                $section_title = $row['section_title'];
+                $options .= "<li><a class='dropdown-item' href='#' value='$id'>$section_title</a></li>";
+            }
+
+            ?>
+
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Menu item</a></li>
-                <li><a class="dropdown-item" href="#">Menu item</a></li>
-                <li><a class="dropdown-item" href="#">Menu item</a></li>
+                <?php echo $options; ?>
             </ul>
         </div>
 
@@ -234,9 +251,8 @@
 		    $id = $post_row['post_id'];	
 		    $upid = $post_row['user_id'];	
 		    $posted_by = $post_row['firstname']." ".$post_row['lastname'];
-	?>
-        <a style="text-decoration:none; float:right;" href="deletepost.php<?php echo '?id='.$id; ?>"><button
-                class="btn btn-danger">Delete Post</button></a>
+	    ?>
+        
         <?php				
 								$days = floor($post_row['TimeSpent'] / (60 * 60 * 24));
 								$remainder = $post_row['TimeSpent'] % (60 * 60 * 24);
@@ -254,19 +270,34 @@
 
         </p>
 
+        <!-- Post Content -->
         <div class="card mx-5">
+            <!-- Delete Post -->
+            <div class="row">
+                <div class="col-2 m-3 float-right">
+                    <a style="text-decoration:none;" href="#"><button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button></a>
+                    <a style="text-decoration:none;" href="deletepost.php<?php echo '?id='.$id; ?>"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
+                </div>             
+            </div>
+            
             <div class="card-body m-5">
-                <h2 class="card-title text-center m-5">Subject: This is a subject title example</h2>
-                <p class="card-title fw-bold">Posted by: Jasper Macaraeg <?php echo $posted_by; ?></p>
-                <p class="card-text"><small class="text-body-secondary">June 15, 2023 at 3:14pm</small></p>
+                
+                <!-- Content of the post -->
+                <h2 class="card-title text-center mb-5"><?php echo $post_row['section_title']; ?></h2>
+                <span class="badge rounded-pill text-bg-primary">Priority</span>
+                <span class="badge rounded-pill text-bg-danger">Not Priority</span>
+                <p class="card-title fw-bold">Posted by: <?php echo $post_row['firstname'] . " " . $post_row['lastname']; ?></p>
+                <p class="card-text"><small class="text-body-secondary"><?php echo $post_row['date_created']; ?></small></p>
                 <p class="card-text"><?php echo $post_row['content']; ?></p>
-                <img src="images/screenshot2.jpg" class="card-img-bottom img-thumbnail" alt="..." target="_blank">
+                <img src="images/<?php echo $post_row['picture']; ?>" class="card-img-bottom img-thumbnail" alt="..." target="_blank">
+                <h2 class="card-title mt-3">Summary</h2>
+                <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus doloremque autem quo repellat ducimus porro est itaque! Tempore blanditiis perspiciatis iste in asperiores non odio cupiditate porro error, deserunt enim doloribus ad quidem nostrum tenetur molestiae minima, quasi et natus nesciunt. Delectus excepturi laudantium quas ducimus reiciendis sequi in laboriosam.</p>
             </div>
         </div>
 
 
-
-        <div id="container">
+        <!-- Post a comment form -->
+        <div class="card mx-5 mt-5" id="container">
             <form method="post">
                 <div class="mb-3 m-5">
                     <h2 for="commentForm" class="form-label">Post a comment</h2>
@@ -278,21 +309,21 @@
                     <input type="file" name="image" class="form-control" id="imageComment" />
                     <br>
 
-                    <button type="submit" name="comment" class="btn btn-primary"><i class="bi bi-send-fill"></i>
+                    <button type="submit" name="comment" class="btn btn-primary mb-5"><i class="bi bi-send-fill"></i>
                         Send</button>
                 </div>
 
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
             </form>
-
+        </div>
             </br>
 
             <?php 
-								$comment_query = mysqli_query($conn,"SELECT * ,UNIX_TIMESTAMP() - date_posted AS TimeSpent FROM comment LEFT JOIN user on user.user_id = comment.user_id where post_id = '$id'") or die (mysqli_error());
-								while ($comment_row=mysqli_fetch_array($comment_query)){
-    								$comment_id = $comment_row['comment_id'];
-    								$comment_by = $comment_row['firstname']." ".  $comment_row['lastname'];
-							?>
+				$comment_query = mysqli_query($conn,"SELECT * ,UNIX_TIMESTAMP() - date_posted AS TimeSpent FROM comment LEFT JOIN user on user.user_id = comment.user_id where post_id = '$id'") or die (mysqli_error());
+				while ($comment_row=mysqli_fetch_array($comment_query)){
+    				$comment_id = $comment_row['comment_id'];
+    				$comment_by = $comment_row['firstname']." ".  $comment_row['lastname'];
+			?>
             <br><?php echo $comment_by; ?> - <?php echo $comment_row['content']; ?>
             <br>
             <?php				
@@ -318,56 +349,55 @@
 					if ($u_id = $id){
 					?>
 
-
-
             <?php }else{ ?>
 
             <?php
-					} } ?>
-
-
-            <?php
-								if (isset($_POST['post'])){
-								$post_content  = $_POST['post_content'];
-								
-								mysqli_query($conn,"insert into post (content,date_created,user_id) values ('$post_content','".strtotime(date("Y-m-d h:i:sa"))."','$user_id') ")or die(mysqli_error());
-								header('location:home.php');
-								}
-							?>
-
+				} } ?>
             <?php
 							
-								if (isset($_POST['comment'])){
-								$comment_content = $_POST['comment_content'];
-								$post_id=$_POST['id'];
+				if (isset($_POST['comment'])){
+                    $user_id=$_SESSION['id'];
+					$comment_content = $_POST['comment_content'];
+					$post_id=$_POST['id'];
 								
-								mysqli_query($conn,"insert into comment (content,date_posted,user_id,post_id) values ('$comment_content','".strtotime(date("Y-m-d h:i:sa"))."','$user_id','$post_id')") or die (mysqli_error());
-								header('location:home.php');
-								}
-							?>
+					mysqli_query($conn,"insert into comment (content,date_posted,user_id,post_id) values ('$comment_content','".strtotime(date("Y-m-d h:i:sa"))."','$user_id','$post_id')") or die (mysqli_error());
+					header('location:home.php');
+				}
+			?>
 
-            <!-- Comments -->
-            <div class="media mx-5">
+            <!-- Comments Section -->
+            <div class="card p-5 media mx-5">
                 <h2 for="commentForm" class="form-label">Comments</h2>
-                <!--Picture of the user-->
-                <img width="50px" height="50px" style="border-radius: 100px;"
-                    src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
-                <div class="media-body">
-                    <!--Name of the commenter-->
-                    <h4 class="media-heading">John Doe</h4>
-                    <!--Comment of the user-->
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem
-                        ipsum dolor sit amet, consectetur adipiscing elit.
-                    </p>
+                <!--Comment-->
+                <div class="card mt-2">
+                    <div class="row">
+                        <!-- Image of the commenter -->
+                        <img class="rounded-circle col-1 m-3" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
+                        <!--Name of the commenter-->
+                        <h4 class="media-heading col-10 mt-3">John Doe</h4>
+                        <!--Comment of the commenter-->
+                        <p class="col-12 mx-3">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem
+                            ipsum dolor sit amet, consectetur adipiscing elit.
+                        </p>
 
-                    <!--Timestamp when did this comment-->
-                    <ul class="list-unstyled list-inline media-detail pull-left">
-                        <li>May 27, 2015 at 3:14am</li>
-                    </ul>
+                        <!--Timestamp when did this comment-->
+                        <ul class="list-unstyled list-inline media-detail pull-left mx-3">
+                            <li>May 27, 2015 at 3:14am</li>
+                        </ul>
+                    </div>
                 </div>
+                
+                <!-- View more comments button -->
+                <button type="button" class="btn btn-outline-primary mt-4">View more comments</button>
+                
             </div>
-        </div>
+
+            
+
+        
+
+        
 
         <!--JS Bootstrap CDN-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
