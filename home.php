@@ -246,26 +246,26 @@
         <!--Content of the Post-->
 
         <?php	
-		$query = mysqli_query($conn,"SELECT *,UNIX_TIMESTAMP() - date_created AS TimeSpent from post LEFT JOIN user on user.user_id = post.user_id order by post_id DESC")or die(mysqli_error());
+		$query = mysqli_query($conn,"SELECT *,UNIX_TIMESTAMP() - date_created AS TimeSpent from post LEFT JOIN user on user.user_id = post.user_id order by post_id DESC");
 		while($post_row=mysqli_fetch_array($query)){
 		    $id = $post_row['post_id'];	
 		    $upid = $post_row['user_id'];	
 		    $posted_by = $post_row['firstname']." ".$post_row['lastname'];
 	    ?>
-        
+
         <?php				
-								$days = floor($post_row['TimeSpent'] / (60 * 60 * 24));
-								$remainder = $post_row['TimeSpent'] % (60 * 60 * 24);
-								$hours = floor($remainder / (60 * 60));
-								$remainder = $remainder % (60 * 60);
-								$minutes = floor($remainder / 60);
-								$seconds = $remainder % 60;
-								if($days > 0)
-								echo date('F d, Y - H:i:sa', $post_row['date_created']);
-								elseif($days == 0 && $hours == 0 && $minutes == 0)
-								echo "A few seconds ago";		
-								elseif($days == 0 && $hours == 0)
-								echo $minutes.' minutes ago';
+		    $days = floor($post_row['TimeSpent'] / (60 * 60 * 24));
+			$remainder = $post_row['TimeSpent'] % (60 * 60 * 24);
+			$hours = floor($remainder / (60 * 60));
+			$remainder = $remainder % (60 * 60);
+			$minutes = floor($remainder / 60);
+			$seconds = $remainder % 60;
+			if($days > 0)
+			echo date('F d, Y - H:i:sa', $post_row['date_created']);
+			elseif($days == 0 && $hours == 0 && $minutes == 0)
+			echo "A few seconds ago";		
+			elseif($days == 0 && $hours == 0)
+			echo $minutes.' minutes ago';
 		?>
 
         </p>
@@ -275,30 +275,40 @@
             <!-- Delete Post -->
             <div class="row">
                 <div class="col-2 m-3 float-right">
-                    <a style="text-decoration:none;" href="#"><button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button></a>
-                    <a style="text-decoration:none;" href="deletepost.php<?php echo '?id='.$id; ?>"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
-                </div>             
+                    <a style="text-decoration:none;" href="#"><button class="btn btn-warning"><i
+                                class="bi bi-pencil-square"></i></button></a>
+                    <a style="text-decoration:none;" href="deletepost.php<?php echo '?id='.$id; ?>"><button
+                            class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
+                </div>
             </div>
-            
+
             <div class="card-body m-5">
-                
+
                 <!-- Content of the post -->
                 <h2 class="card-title text-center mb-5"><?php echo $post_row['section_title']; ?></h2>
                 <span class="badge rounded-pill text-bg-primary">Priority</span>
                 <span class="badge rounded-pill text-bg-danger">Not Priority</span>
-                <p class="card-title fw-bold">Posted by: <?php echo $post_row['firstname'] . " " . $post_row['lastname']; ?></p>
-                <p class="card-text"><small class="text-body-secondary"><?php echo $post_row['date_created']; ?></small></p>
+                <span class="badge rounded-pill text-bg-success">Resolved</span>
+                <p class="card-title fw-bold">Posted by:
+                    <?php echo $post_row['firstname'] . " " . $post_row['lastname']; ?></p>
+                <p class="card-text"><small class="text-body-secondary"><?php echo $post_row['date_created']; ?></small>
+                </p>
                 <p class="card-text"><?php echo $post_row['content']; ?></p>
-                <img src="images/<?php echo $post_row['picture']; ?>" class="card-img-bottom img-thumbnail" alt="..." target="_blank">
+                <img src="images/<?php echo $post_row['picture']; ?>" class="card-img-bottom img-thumbnail" alt="..."
+                    target="_blank">
                 <h2 class="card-title mt-3">Summary</h2>
-                <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus doloremque autem quo repellat ducimus porro est itaque! Tempore blanditiis perspiciatis iste in asperiores non odio cupiditate porro error, deserunt enim doloribus ad quidem nostrum tenetur molestiae minima, quasi et natus nesciunt. Delectus excepturi laudantium quas ducimus reiciendis sequi in laboriosam.</p>
+                <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus doloremque
+                    autem quo repellat ducimus porro est itaque! Tempore blanditiis perspiciatis iste in asperiores non
+                    odio cupiditate porro error, deserunt enim doloribus ad quidem nostrum tenetur molestiae minima,
+                    quasi et natus nesciunt. Delectus excepturi laudantium quas ducimus reiciendis sequi in laboriosam.
+                </p>
             </div>
         </div>
 
 
         <!-- Post a comment form -->
         <div class="card mx-5 mt-5" id="container">
-            <form method="post">
+            <form id="postThis" method="post">
                 <div class="mb-3 m-5">
                     <h2 for="commentForm" class="form-label">Post a comment</h2>
                     <textarea name="comment_content" class="form-control" id="commentForm" rows="3" cols="11"
@@ -306,106 +316,70 @@
                     <br>
 
                     <label for="imageComment">Image</label>
-                    <input type="file" name="image" class="form-control" id="imageComment" />
+                    <input type="file" name="imageComment" class="form-control" id="imageComment" />
                     <br>
 
                     <button type="submit" name="comment" class="btn btn-primary mb-5"><i class="bi bi-send-fill"></i>
-                        Send</button>
+                        Post</button>
                 </div>
 
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
             </form>
         </div>
-            </br>
+        </br>
 
-            <?php 
-				$comment_query = mysqli_query($conn,"SELECT * ,UNIX_TIMESTAMP() - date_posted AS TimeSpent FROM comment LEFT JOIN user on user.user_id = comment.user_id where post_id = '$id'") or die (mysqli_error());
-				while ($comment_row=mysqli_fetch_array($comment_query)){
-    				$comment_id = $comment_row['comment_id'];
-    				$comment_by = $comment_row['firstname']." ".  $comment_row['lastname'];
-			?>
-            <br><?php echo $comment_by; ?> - <?php echo $comment_row['content']; ?>
-            <br>
-            <?php				
-								$days = floor($comment_row['TimeSpent'] / (60 * 60 * 24));
-								$remainder = $comment_row['TimeSpent'] % (60 * 60 * 24);
-								$hours = floor($remainder / (60 * 60));
-								$remainder = $remainder % (60 * 60);
-								$minutes = floor($remainder / 60);
-								$seconds = $remainder % 60;
-								if($days > 0)
-								echo date('F d, Y - H:i:sa', $comment_row['date_posted']);
-								elseif($days == 0 && $hours == 0 && $minutes == 0)
-								echo "A few seconds ago";		
-								elseif($days == 0 && $hours == 0)
-								echo $minutes.' minutes ago';
-							?>
-            <br>
-            <?php
-							}
-							?>
+        <?php } ?>
 
-            <?php 
-					if ($u_id = $id){
-					?>
 
-            <?php }else{ ?>
+        <!-- Comments Section -->
+        <div id="comments" class="card p-5 media mx-5">
+            <h2 for="commentForm" class="form-label">Comments</h2>
+            <!--Comment-->
+            <div class="card mt-2">
+                <div class="row">
+                    <?php
+                        $sql = "SELECT * FROM comment LIMIT 10";
+                        $result = mysqli_query($conn, $sql);
+                        if(mysqli_num_rows($result) > 0){
+                            while($row = mysqli_fetch_assoc($result)){
+                    ?>
+                    <!-- Image of the commenter -->
+                    <img class="rounded-circle col-1 m-3" src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                        alt="" />
+                    <!--Name of the commenter-->
+                    <h4 class="media-heading col-10 mt-3"><?php echo $row['user_id']; ?></h4>
+                    <!--Comment of the commenter-->
+                    <p class="col-12 mx-3">
+                        <?php echo $row['content']; ?>
+                    </p>
 
-            <?php
-				} } ?>
-            <?php
-							
-				if (isset($_POST['comment'])){
-                    $user_id=$_SESSION['id'];
-					$comment_content = $_POST['comment_content'];
-					$post_id=$_POST['id'];
-								
-					mysqli_query($conn,"insert into comment (content,date_posted,user_id,post_id) values ('$comment_content','".strtotime(date("Y-m-d h:i:sa"))."','$user_id','$post_id')") or die (mysqli_error());
-					header('location:home.php');
-				}
-			?>
+                    <!--Timestamp when did this comment-->
+                    <ul class="list-unstyled list-inline media-detail pull-left mx-3">
+                        <li><?php echo $row['date_posted']; ?></li>
+                    </ul>
+                    <?php
+                            }
+                        }else{
+                            echo "There are no comments!";
+                        }
+                    ?>
 
-            <!-- Comments Section -->
-            <div class="card p-5 media mx-5">
-                <h2 for="commentForm" class="form-label">Comments</h2>
-                <!--Comment-->
-                <div class="card mt-2">
-                    <div class="row">
-                        <!-- Image of the commenter -->
-                        <img class="rounded-circle col-1 m-3" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
-                        <!--Name of the commenter-->
-                        <h4 class="media-heading col-10 mt-3">John Doe</h4>
-                        <!--Comment of the commenter-->
-                        <p class="col-12 mx-3">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem
-                            ipsum dolor sit amet, consectetur adipiscing elit.
-                        </p>
-
-                        <!--Timestamp when did this comment-->
-                        <ul class="list-unstyled list-inline media-detail pull-left mx-3">
-                            <li>May 27, 2015 at 3:14am</li>
-                        </ul>
-                    </div>
                 </div>
-                
-                <!-- View more comments button -->
-                <button type="button" class="btn btn-outline-primary mt-4">View more comments</button>
-                
             </div>
 
-            
+            <!-- View more comments button -->
+            <button type="button" class="btn btn-outline-primary mt-4" id="viewMoreComments">View more comments</button>
 
-        
-
-        
+        </div>
 
         <!--JS Bootstrap CDN-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
         </script>
 
-        <!--Uploading a Post-->
+
         <script>
+        //Uploading a Post
         $(document).on('submit', '#uploadPost', function(e) {
             e.preventDefault();
 
@@ -435,6 +409,48 @@
             });
 
         });
+
+        //Posting a Comment
+        $(document).on('submit', '#postThis', function(e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("post_this", true);
+
+            $.ajax({
+                type: "POST",
+                url: "code.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 422) {
+                        $('#errorMessage').removeClass('d-none');
+                        $('#errorMessage').text(res.message);
+                    } else if (res.status == 200) {
+                        $('#errorMessage').addClass('d-none');
+                        $('#exampleModal').modal('hide');
+                        $('#uploadPost')[0].reset();
+                        window.location = 'home.php';
+                    } else if (res.status == 500) {
+                        alert(res.message);
+                    }
+                }
+            });
+        });
+
+        //Show more comments
+        // $(document).ready(function {
+        //     var commentCount = 10;
+        //     $("#viewMoreComments").click(function() {
+        //         commentCount = commentCount + 5;
+        //         $("#comments").load("load-comments.php", {
+        //             commentNewCount: commentCount
+        //         });
+        //     });
+        // })
         </script>
 </body>
 
