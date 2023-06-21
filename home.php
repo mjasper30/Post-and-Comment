@@ -206,6 +206,74 @@
             </div>
         </div>
 
+        <!-- Edit Modal Form-->
+        <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="uploadPost" method="POST">
+                        <div class="modal-body">
+
+                            <div id="errorMessage" class="alert alert-warning d-none"></div>
+
+                            <div class="mb-3">
+                                <label for="">Section Title</label>
+                                <input type="text" name="section_title" class="form-control" value="" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="">Content of the post</label>
+                                <textarea class="form-control" name="content" rows="5"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="">Image</label>
+                                <input type="file" name="image" class="form-control" />
+                            </div>
+                            <!--List of status-->
+                            <div class="btn-group mb-3">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Update Status
+                                </button>
+                                <?php
+                                $query = "SELECT post_id, section_title FROM `post`";
+                                $result = mysqli_query($conn, $query);
+                    
+                                // Check if the query was successful
+                                if (!$result) {
+                                    die("Database query failed.");
+                                }
+                    
+                                $options = '';
+                    
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $id = $row['post_id'];
+                                    $section_title = $row['section_title'];
+                                    $options .= "<li><a class='dropdown-item' href='#' value='$id'>$section_title</a></li>";
+                                }
+                    
+                                ?>
+
+                                <ul class="dropdown-menu">
+                                    <?php echo $options; ?>
+                                </ul>
+                            </div>
+                            <div class="mb-3">
+                                <label for="">Summary</label>
+                                <textarea class="form-control" name="summary" rows="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary me-1">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <!--Search-->
         <div class="input-group mb-3 mt-3">
             <input type="text" class="form-control" placeholder="Search in conversation" aria-label="search-subject"
@@ -275,8 +343,8 @@
             <!-- Delete Post -->
             <div class="row">
                 <div class="col-2 m-3 float-right">
-                    <a style="text-decoration:none;" href="#"><button class="btn btn-warning"><i
-                                class="bi bi-pencil-square"></i></button></a>
+                    <a style="text-decoration:none;" href="#"><button class="btn btn-warning" data-bs-toggle="modal"
+                            data-bs-target="#exampleModalEdit"><i class="bi bi-pencil-square"></i></button></a>
                     <a style="text-decoration:none;" href="deletepost.php<?php echo '?id='.$id; ?>"><button
                             class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
                 </div>
