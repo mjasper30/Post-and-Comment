@@ -6,6 +6,7 @@ if(isset($_POST['upload_post']))
 {
     $user_id=$_SESSION['id'];
     $section_title = mysqli_real_escape_string($conn, $_POST['section_title']);
+    $post_status = mysqli_real_escape_string($conn, $_POST['post_status']);
     $content = mysqli_real_escape_string($conn, $_POST['content']);
     $img=$_FILES["image"]["name"];
     $extension = substr($img,strlen($img)-4,strlen($img));
@@ -26,7 +27,7 @@ if(isset($_POST['upload_post']))
         return false;
     }
 
-    $query = "INSERT INTO `post`(`user_id`, `section_title`, `content`, `picture`) VALUES ('$user_id','$section_title','$content','$image')";
+    $query = "INSERT INTO `post`(`user_id`, `section_title`, `content`, `action`, `picture`) VALUES ('$user_id','$section_title','$content','$post_status','$image')";
     $query_run = mysqli_query($conn, $query);
 
     if($query_run)
@@ -53,18 +54,25 @@ if(isset($_POST['post_this'])){
     $user_id=$_SESSION['id'];
     $comment_content = mysqli_real_escape_string($conn, $_POST['comment_content']);
     $post_id=$_POST['id'];
-    $img=$_FILES["imageComment"]["name"];
-    $extension = substr($img,strlen($img)-4,strlen($img));
-    $allowed_extensions = array(".jpg","jpeg",".png",".gif");
-    $img=md5($img).time().$extension;
-    move_uploaded_file($_FILES["imageComment"]["tmp_name"],"images/".$img);
-    $image = mysqli_real_escape_string($conn, $img);
+    $image = '';
+    
+    if($_FILES["imageComment"]["name"] == NULL){
+        $image = NULL;
+    }else{
+        $img=$_FILES["imageComment"]["name"];
+        $extension = substr($img,strlen($img)-4,strlen($img));
+        $allowed_extensions = array(".jpg","jpeg",".png",".gif",".webp");
+        $img=md5($img).time().$extension;
+        move_uploaded_file($_FILES["imageComment"]["tmp_name"],"images/".$img);
+        $image = mysqli_real_escape_string($conn, $img);
+    }
+    
 
     if($comment_content == NULL)
     {
         $res = [
             'status' => 422,
-            'message' => 'You must comment something are mandatory'
+            'message' => 'You must comment something'
         ];
         echo json_encode($res);
         return false;

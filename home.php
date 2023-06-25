@@ -13,6 +13,7 @@
     <!--CSS Bootstrap CDN-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
     <!--Icons Bootstrap CDN-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
@@ -20,7 +21,8 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!--Alert JS-->
-    <script src="js/alert.js"></script>
+    <!--<script src="js/alert.js"></script>-->
+
     <!--Alert CSS-->
     <link rel="stylesheet" href="css/alert.css">
 
@@ -103,7 +105,7 @@
     }
 
     #comments .media {
-        border-top: 1px dashed #dddddd;
+        /*border-top: 1px dashed #dddddd;*/
         padding: 20px 0;
         margin: 0;
     }
@@ -162,8 +164,6 @@
     <div class="container">
         <h1 class="text-center">Post and Comment System</h1>
 
-        <h2>Welcome - <?php echo $fullname; ?></h2>
-
         <!-- Upload Button Trigger Modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Upload
@@ -172,8 +172,8 @@
         <!--Logout Button-->
         <a href="logout.php"><button type="button" class="btn btn-primary">Logout</button></a>
 
-        <!-- Modal Form-->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- Upload Post Modal Form-->
+        <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -191,8 +191,36 @@
                             </div>
                             <div class="mb-3">
                                 <label for="">Content of the post</label>
-                                <textarea class="form-control" name="content" rows="5"></textarea>
+                                <textarea class="form-control" name="content" rows="3"></textarea>
                             </div>
+
+                            <div class="form-group mb-3">
+                                <label for="exampleCombobox">Select status</label>
+                                <select name="post_status" class="form-control" id="exampleCombobox">
+                                    <option value="">Choose an option</option>
+                                    <?php
+                                $query = "SELECT id, status FROM `post_status`";
+                                $result = mysqli_query($conn, $query);
+                    
+                                // Check if the query was successful
+                                if (!$result) {
+                                    die("Database query failed.");
+                                }
+                    
+                                $options = '';
+                    
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $id = $row['id'];
+                                    $status = $row['status'];
+                                    $options .= "<option value=".$status.">$status</option>";
+                                }
+                                
+                                echo $options;
+                                ?>
+
+                                </select>
+                            </div>
+
                             <div class="mb-3">
                                 <label for="">Image</label>
                                 <input type="file" name="image" class="form-control" />
@@ -209,7 +237,7 @@
         <!-- Edit Modal Form-->
         <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Edit Post</h5>
@@ -220,26 +248,25 @@
 
                             <div id="errorMessage" class="alert alert-warning d-none"></div>
 
-                            <div class="mb-3">
-                                <label for="">Section Title</label>
-                                <input type="text" name="section_title" class="form-control" value="" />
-                            </div>
-                            <div class="mb-3">
-                                <label for="">Content of the post</label>
-                                <textarea class="form-control" name="content" rows="5"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="">Image</label>
-                                <input type="file" name="image" class="form-control" />
-                            </div>
+                            <!--<div class="mb-3">-->
+                            <!--    <label for="">Section Title</label>-->
+                            <!--    <input type="text" name="section_title" class="form-control" value="" />-->
+                            <!--</div>-->
+                            <!--<div class="mb-3">-->
+                            <!--    <label for="">Content of the post</label>-->
+                            <!--    <textarea class="form-control" name="content" rows="5"></textarea>-->
+                            <!--</div>-->
+                            <!--<div class="mb-3">-->
+                            <!--    <label for="">Image</label>-->
+                            <!--    <input type="file" name="image" class="form-control" />-->
+                            <!--</div>-->
                             <!--List of status-->
-                            <div class="btn-group mb-3">
-                                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Update Status
-                                </button>
-                                <?php
-                                $query = "SELECT post_id, section_title FROM `post`";
+                            <div class="form-group mb-3">
+                                <label for="exampleCombobox">Select status</label>
+                                <select name="post_status" class="form-control" id="exampleCombobox">
+                                    <option value="">Update status</option>
+                                    <?php
+                                $query = "SELECT id, status FROM `post_status`";
                                 $result = mysqli_query($conn, $query);
                     
                                 // Check if the query was successful
@@ -250,24 +277,23 @@
                                 $options = '';
                     
                                 while ($row = mysqli_fetch_assoc($result)) {
-                                    $id = $row['post_id'];
-                                    $section_title = $row['section_title'];
-                                    $options .= "<li><a class='dropdown-item' href='#' value='$id'>$section_title</a></li>";
+                                    $id = $row['id'];
+                                    $status = $row['status'];
+                                    $options .= "<option value=".$status.">$status</option>";
                                 }
-                    
+                                
+                                echo $options;
                                 ?>
 
-                                <ul class="dropdown-menu">
-                                    <?php echo $options; ?>
-                                </ul>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="">Summary</label>
-                                <textarea class="form-control" name="summary" rows="10"></textarea>
+                                <textarea class="form-control" name="summary" rows="5"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary me-1">Upload</button>
+                            <button type="submit" class="btn btn-primary me-1">Save</button>
                         </div>
                     </form>
                 </div>
@@ -314,8 +340,8 @@
         <!--Content of the Post-->
 
         <?php	
-		$query = mysqli_query($conn,"SELECT *,UNIX_TIMESTAMP() - date_created AS TimeSpent from post LEFT JOIN user on user.user_id = post.user_id order by post_id DESC");
-		while($post_row=mysqli_fetch_array($query)){
+		$query1 = mysqli_query($conn,"SELECT *,UNIX_TIMESTAMP() - date_created AS TimeSpent from post LEFT JOIN user on user.user_id = post.user_id ORDER BY post_id DESC");
+		while($post_row=mysqli_fetch_array($query1)){
 		    $id = $post_row['post_id'];	
 		    $upid = $post_row['user_id'];	
 		    $posted_by = $post_row['firstname']." ".$post_row['lastname'];
@@ -354,12 +380,50 @@
 
                 <!-- Content of the post -->
                 <h2 class="card-title text-center mb-5"><?php echo $post_row['section_title']; ?></h2>
-                <span class="badge rounded-pill text-bg-primary">Priority</span>
-                <span class="badge rounded-pill text-bg-danger">Not Priority</span>
-                <span class="badge rounded-pill text-bg-success">Resolved</span>
+
+                <?php
+                    include('dbconn.php');
+                    
+                    $query = "SELECT action FROM post WHERE post_id = $id";
+                    
+                    $result = mysqli_query($conn, $query);
+                    
+                    if ($result) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $taskStatus = $row['action'];
+                            $priorityStatus = '';
+                    
+                            if ($taskStatus == 'Resolved') {
+                                $priorityStatus = '<span class="badge rounded-pill text-bg-success">Resolved</span>';
+                            } elseif ($taskStatus == 'Priority') {
+                                $priorityStatus = '<span class="badge rounded-pill text-bg-primary">Priority</span>';
+                            } elseif ($taskStatus == 'Not Priority') {
+                                $priorityStatus = '<span class="badge rounded-pill text-bg-danger">Not Priority</span>';
+                            } else {
+                                $priorityStatus = '';
+                            }
+                    
+                            $row['priority_status'] = $priorityStatus;
+                            // You can output or further process the updated row here
+                        }
+                    } else {
+                        echo "Error executing query: " . mysqli_error($conn);
+                    }
+                    
+                    
+                    ?>
+
+                <div class="mb-2">
+                    <?php echo $priorityStatus; ?>
+                </div>
                 <p class="card-title fw-bold">Posted by:
                     <?php echo $post_row['firstname'] . " " . $post_row['lastname']; ?></p>
-                <p class="card-text"><small class="text-body-secondary"><?php echo $post_row['date_created']; ?></small>
+                <?php
+                        $dateTimeString = $post_row['date_created'];
+                        $dateTime = new DateTime($dateTimeString);
+                        $formattedDateTime = $dateTime->format('F d, Y g:i:s A');
+                    ?>
+                <p class="card-text"><small class="text-body-secondary"><?php echo $formattedDateTime; ?></small>
                 </p>
                 <p class="card-text"><?php echo $post_row['content']; ?></p>
                 <img src="images/<?php echo $post_row['picture']; ?>" class="card-img-bottom img-thumbnail" alt="..."
@@ -373,6 +437,74 @@
             </div>
         </div>
 
+
+
+
+
+
+
+        <!-- Comments Section -->
+        <div id="comments" class="card p-5 media mx-5 mt-3">
+            <h2 for="commentForm" class="form-label">Comments</h2>
+            <!--Comment-->
+            <div class="row m-2">
+                <?php
+                        $sql = "SELECT * FROM comment INNER JOIN user ON user.user_id = comment.user_id ORDER BY comment.date_posted DESC LIMIT 10";
+                        $result = mysqli_query($conn, $sql);
+                        if(mysqli_num_rows($result) > 0){
+                            while($row = mysqli_fetch_assoc($result)){
+                    ?>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="row">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                    class="mr-3 col-1 rounded-circle" alt="Profile Picture">
+                                <h5 class="card-title mt-3 col-11">
+                                    <?php echo $row['firstname'] . " " . $row['lastname']; ?></h5>
+                            </div>
+                            <div class="media-body mt-3">
+                                <p class="card-text"><?php echo $row['content']; ?></p>
+                                <?php
+                                if($row['picture'] == NULL){
+                                    echo "";
+                                }else{
+                                    ?>
+                                <a href="images/<?php echo $row['picture'];?>" target="_blank">
+                                    <img class="mb-3" src="images/<?php echo $row['picture'];?>" alt="Image Comment">
+                                </a>
+                                <?php
+                                }
+                            ?>
+
+                                <div class="card-footer bg-white">
+                                    <!--Timestamp when did this comment-->
+                                    <?php
+                                    $dateTimeString = $row['date_posted'];
+                                    $dateTime = new DateTime($dateTimeString);
+                                    $formattedDateTime = $dateTime->format('F d, Y g:i:s A');
+                                ?>
+                                    <small class="text-muted"><?php echo $formattedDateTime; ?></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+                            }
+                        }else{
+                            echo "There are no comments!";
+                        }
+                        mysqli_close($conn);
+                    ?>
+
+            </div>
+
+
+            <!-- View more comments button -->
+            <button type="button" class="btn btn-outline-primary mt-4" id="viewMoreComments">View more comments</button>
+
+        </div>
 
         <!-- Post a comment form -->
         <div class="card mx-5 mt-5" id="container">
@@ -397,48 +529,6 @@
         </br>
 
         <?php } ?>
-
-
-        <!-- Comments Section -->
-        <div id="comments" class="card p-5 media mx-5">
-            <h2 for="commentForm" class="form-label">Comments</h2>
-            <!--Comment-->
-            <div class="card mt-2">
-                <div class="row">
-                    <?php
-                        $sql = "SELECT * FROM comment LIMIT 10";
-                        $result = mysqli_query($conn, $sql);
-                        if(mysqli_num_rows($result) > 0){
-                            while($row = mysqli_fetch_assoc($result)){
-                    ?>
-                    <!-- Image of the commenter -->
-                    <img class="rounded-circle col-1 m-3" src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                        alt="" />
-                    <!--Name of the commenter-->
-                    <h4 class="media-heading col-10 mt-3"><?php echo $row['user_id']; ?></h4>
-                    <!--Comment of the commenter-->
-                    <p class="col-12 mx-3">
-                        <?php echo $row['content']; ?>
-                    </p>
-
-                    <!--Timestamp when did this comment-->
-                    <ul class="list-unstyled list-inline media-detail pull-left mx-3">
-                        <li><?php echo $row['date_posted']; ?></li>
-                    </ul>
-                    <?php
-                            }
-                        }else{
-                            echo "There are no comments!";
-                        }
-                    ?>
-
-                </div>
-            </div>
-
-            <!-- View more comments button -->
-            <button type="button" class="btn btn-outline-primary mt-4" id="viewMoreComments">View more comments</button>
-
-        </div>
 
         <!--JS Bootstrap CDN-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
@@ -470,6 +560,7 @@
                         $('#errorMessage').addClass('d-none');
                         $('#exampleModal').modal('hide');
                         $('#uploadPost')[0].reset();
+                        window.location.href = "home.php";
                     } else if (res.status == 500) {
                         alert(res.message);
                     }
@@ -501,6 +592,7 @@
                         $('#errorMessage').addClass('d-none');
                         $('#exampleModal').modal('hide');
                         $('#uploadPost')[0].reset();
+                        // window.location = 'home.php#comments';
                         window.location = 'home.php';
                     } else if (res.status == 500) {
                         alert(res.message);
