@@ -2,6 +2,7 @@
 require 'includes/dbconn.php';
 include('session.php');
 
+//Add Post
 if(isset($_POST['upload_post']))
 {
     $user_id=$_SESSION['id'];
@@ -50,6 +51,7 @@ if(isset($_POST['upload_post']))
     }
 }
 
+//Add Comment
 if(isset($_POST['post_this'])){
     $user_id=$_SESSION['id'];
     $comment_content = mysqli_real_escape_string($conn, $_POST['comment_content']);
@@ -101,4 +103,77 @@ if(isset($_POST['post_this'])){
         return false;
     }
 }
+
+// Get Edit Post
+if(isset($_GET['post_id']))
+{
+    $post_id = mysqli_real_escape_string($conn, $_GET['post_id']);
+
+    $query = "SELECT * FROM `post` WHERE post_id='$post_id'";
+    $query_run = mysqli_query($conn, $query);
+
+    if(mysqli_num_rows($query_run) == 1)
+    {
+        $post = mysqli_fetch_array($query_run);
+
+        $res = [
+            'status' => 200,
+            'message' => 'Post Edit Successfully',
+            'data' => $post
+        ];
+        echo json_encode($res);
+        return false;
+    }
+    else
+    {
+        $res = [
+            'status' => 404,
+            'message' => 'Post Id Not Found'
+        ];
+        echo json_encode($res);
+        return false;
+    }
+}
+
+// Edit Post
+if(isset($_POST['update_post']))
+{
+    $post_id = mysqli_real_escape_string($conn, $_POST['post_id']);
+
+    $action = mysqli_real_escape_string($conn, $_POST['post_status']);
+    $summary = mysqli_real_escape_string($conn, $_POST['summary']);
+
+    if($action == NULL || $summary == NULL)
+    {
+        $res = [
+            'status' => 422,
+            'message' => 'You must edit something'
+        ];
+        echo json_encode($res);
+        return;
+    }
+
+    $query = "UPDATE `post` SET action='$action', summary='$summary' WHERE post_id='$post_id'";
+    $query_run = mysqli_query($conn, $query);
+
+    if($query_run)
+    {
+        $res = [
+            'status' => 200,
+            'message' => 'Post Updated Successfully'
+        ];
+        echo json_encode($res);
+        return;
+    }
+    else
+    {
+        $res = [
+            'status' => 500,
+            'message' => 'Post Not Updated'
+        ];
+        echo json_encode($res);
+        return;
+    }
+}
+
 ?>

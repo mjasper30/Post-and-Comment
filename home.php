@@ -243,28 +243,17 @@
                         <h5 class="modal-title" id="exampleModalLabel">Edit Post</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="uploadPost" method="POST">
+                    <form id="updatePost" method="POST">
                         <div class="modal-body">
 
-                            <div id="errorMessage" class="alert alert-warning d-none"></div>
+                            <div id="errorMessageUpdate" class="alert alert-warning d-none"></div>
 
-                            <!--<div class="mb-3">-->
-                            <!--    <label for="">Section Title</label>-->
-                            <!--    <input type="text" name="section_title" class="form-control" value="" />-->
-                            <!--</div>-->
-                            <!--<div class="mb-3">-->
-                            <!--    <label for="">Content of the post</label>-->
-                            <!--    <textarea class="form-control" name="content" rows="5"></textarea>-->
-                            <!--</div>-->
-                            <!--<div class="mb-3">-->
-                            <!--    <label for="">Image</label>-->
-                            <!--    <input type="file" name="image" class="form-control" />-->
-                            <!--</div>-->
+                            <input type="hidden" name="post_id" id="post_id">
                             <!--List of status-->
                             <div class="form-group mb-3">
                                 <label for="exampleCombobox">Select status</label>
-                                <select name="post_status" class="form-control" id="exampleCombobox">
-                                    <option value="">Update status</option>
+                                <select name="post_status" id="post_status" class="form-control" id="exampleCombobox">
+                                    <option value="">Choose Status</option>
                                     <?php
                                 $query = "SELECT id, status FROM `post_status`";
                                 $result = mysqli_query($conn, $query);
@@ -289,7 +278,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="">Summary</label>
-                                <textarea class="form-control" name="summary" rows="5"></textarea>
+                                <textarea class="form-control" name="summary" id="summary" rows="5"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -366,11 +355,27 @@
 
         <!-- Post Content -->
         <div class="card mx-5">
-            <!-- Delete Post -->
+
             <div class="row">
                 <div class="col-2 m-3 float-right">
-                    <a style="text-decoration:none;" href="#"><button class="btn btn-warning" data-bs-toggle="modal"
-                            data-bs-target="#exampleModalEdit"><i class="bi bi-pencil-square"></i></button></a>
+                    <?php
+                $query = "SELECT * FROM `post`";
+                $query_run = mysqli_query($conn, $query);
+
+                if(mysqli_num_rows($query_run) > 0)
+                {
+                    foreach($query_run as $post)
+                    {
+                ?>
+                    <!-- Edit Post Button -->
+                    <button class="editPostBtn btn btn-warning" value="<?=$post['post_id'];?>" data-bs-toggle="modal"
+                        data-bs-target="#exampleModalEdit"><i class="bi bi-pencil-square"></i></button>
+
+                    <?php
+                    }
+                }
+                ?>
+                    <!-- Delete Post Button -->
                     <a style="text-decoration:none;" href="deletepost.php<?php echo '?id='.$id; ?>"><button
                             class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
                 </div>
@@ -397,7 +402,7 @@
                                 $priorityStatus = '<span class="badge rounded-pill text-bg-success">Resolved</span>';
                             } elseif ($taskStatus == 'Priority') {
                                 $priorityStatus = '<span class="badge rounded-pill text-bg-primary">Priority</span>';
-                            } elseif ($taskStatus == 'Not Priority') {
+                            } elseif ($taskStatus == 'Not') {
                                 $priorityStatus = '<span class="badge rounded-pill text-bg-danger">Not Priority</span>';
                             } else {
                                 $priorityStatus = '';
@@ -429,19 +434,9 @@
                 <img src="images/<?php echo $post_row['picture']; ?>" class="card-img-bottom img-thumbnail" alt="..."
                     target="_blank">
                 <h2 class="card-title mt-3">Summary</h2>
-                <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus doloremque
-                    autem quo repellat ducimus porro est itaque! Tempore blanditiis perspiciatis iste in asperiores non
-                    odio cupiditate porro error, deserunt enim doloribus ad quidem nostrum tenetur molestiae minima,
-                    quasi et natus nesciunt. Delectus excepturi laudantium quas ducimus reiciendis sequi in laboriosam.
-                </p>
+                <p class="card-text"><?php echo $post_row['summary']; ?></p>
             </div>
         </div>
-
-
-
-
-
-
 
         <!-- Comments Section -->
         <div id="comments" class="card p-5 media mx-5 mt-3">
@@ -561,6 +556,63 @@
                         $('#exampleModal').modal('hide');
                         $('#uploadPost')[0].reset();
                         window.location.href = "home.php";
+                    } else if (res.status == 500) {
+                        alert(res.message);
+                    }
+                }
+            });
+
+        });
+
+        //Get Post ID
+        $(document).on('click', '.editPostBtn', function() {
+            var post_id = $(this).val();
+
+            $.ajax({
+                type: "GET",
+                url: "code.php?post_id=" + post_id,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 422) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+                        $('#post_id').val(res.data.post_id);
+                        $('#post_status').val(res.data.post_status);
+                        $('#summary').val(res.data.summary);
+                    }
+                }
+            });
+        });
+
+        //Update Post
+        $(document).on('submit', '#updatePost', function(e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("update_post", true);
+
+            $.ajax({
+                type: "POST",
+                url: "code.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 422) {
+                        $('#errorMessageUpdate').removeClass('d-none');
+                        $('#errorMessageUpdate').text(res.message);
+
+                    } else if (res.status == 200) {
+
+                        $('#errorMessageUpdate').addClass('d-none');
+
+                        $('#exampleModalEdit').modal('hide');
+                        $('#updatePost')[0].reset();
+                        window.location.href = "home.php";
+
                     } else if (res.status == 500) {
                         alert(res.message);
                     }
