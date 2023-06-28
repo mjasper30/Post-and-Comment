@@ -11,7 +11,8 @@ require 'includes/dbconn.php';
     <?php include('session.php'); ?>
 
     <!--CSS Bootstrap CDN-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
     <!--Icons Bootstrap CDN-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -27,135 +28,137 @@ require 'includes/dbconn.php';
 
     <!--AJAX-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        body {
-            margin-top: 20px;
-        }
+    body {
+        margin-top: 20px;
+    }
 
-        .content-item {
-            padding: 30px 0;
-            background-color: #ffffff;
-        }
+    .content-item {
+        padding: 30px 0;
+        background-color: #ffffff;
+    }
 
-        .content-item.grey {
-            background-color: #f0f0f0;
-            padding: 50px 0;
-            height: 100%;
-        }
+    .content-item.grey {
+        background-color: #f0f0f0;
+        padding: 50px 0;
+        height: 100%;
+    }
 
-        .content-item h2 {
-            font-weight: 700;
-            font-size: 35px;
-            line-height: 45px;
-            text-transform: uppercase;
-            margin: 20px 0;
-        }
+    .content-item h2 {
+        font-weight: 700;
+        font-size: 35px;
+        line-height: 45px;
+        text-transform: uppercase;
+        margin: 20px 0;
+    }
 
-        .content-item h3 {
-            font-weight: 400;
-            font-size: 20px;
-            color: #555555;
-            margin: 10px 0 15px;
-            padding: 0;
-        }
+    .content-item h3 {
+        font-weight: 400;
+        font-size: 20px;
+        color: #555555;
+        margin: 10px 0 15px;
+        padding: 0;
+    }
 
-        .content-headline {
-            height: 1px;
-            text-align: center;
-            margin: 20px 0 70px;
-        }
+    .content-headline {
+        height: 1px;
+        text-align: center;
+        margin: 20px 0 70px;
+    }
 
-        .content-headline h2 {
-            background-color: #ffffff;
-            display: inline-block;
-            margin: -20px auto 0;
-            padding: 0 20px;
-        }
+    .content-headline h2 {
+        background-color: #ffffff;
+        display: inline-block;
+        margin: -20px auto 0;
+        padding: 0 20px;
+    }
 
-        .grey .content-headline h2 {
-            background-color: #f0f0f0;
-        }
+    .grey .content-headline h2 {
+        background-color: #f0f0f0;
+    }
 
-        .content-headline h3 {
-            font-size: 14px;
-            color: #aaaaaa;
-            display: block;
-        }
+    .content-headline h3 {
+        font-size: 14px;
+        color: #aaaaaa;
+        display: block;
+    }
 
-        #comments {
-            box-shadow: 0 -1px 6px 1px rgba(0, 0, 0, 0.1);
-            background-color: #ffffff;
-        }
+    #comments {
+        box-shadow: 0 -1px 6px 1px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
 
-        #comments form {
-            margin-bottom: 30px;
-        }
+    #comments form {
+        margin-bottom: 30px;
+    }
 
-        #comments .btn {
-            margin-top: 7px;
-        }
+    #comments .btn {
+        margin-top: 7px;
+    }
 
-        #comments form fieldset {
-            clear: both;
-        }
+    #comments form fieldset {
+        clear: both;
+    }
 
-        #comments form textarea {
-            height: 100px;
-        }
+    #comments form textarea {
+        height: 100px;
+    }
 
-        #comments .media {
-            /*border-top: 1px dashed #dddddd;*/
-            padding: 20px 0;
-            margin: 0;
-        }
+    #comments .media {
+        /*border-top: 1px dashed #dddddd;*/
+        padding: 20px 0;
+        margin: 0;
+    }
 
-        #comments .media>.pull-left {
-            margin-right: 20px;
-        }
+    #comments .media>.pull-left {
+        margin-right: 20px;
+    }
 
-        #comments .media img {
-            max-width: 100px;
-        }
+    #comments .media img {
+        max-width: 100px;
+    }
 
-        #comments .media h4 {
-            margin: 0 0 10px;
-        }
+    #comments .media h4 {
+        margin: 0 0 10px;
+    }
 
-        #comments .media h4 span {
-            font-size: 14px;
-            float: right;
-            color: #999999;
-        }
+    #comments .media h4 span {
+        font-size: 14px;
+        float: right;
+        color: #999999;
+    }
 
-        #comments .media p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
+    #comments .media p {
+        margin-bottom: 15px;
+        text-align: justify;
+    }
 
-        #comments .media-detail {
-            margin: 0;
-        }
+    #comments .media-detail {
+        margin: 0;
+    }
 
-        #comments .media-detail li {
-            color: #aaaaaa;
-            font-size: 12px;
-            padding-right: 10px;
-            font-weight: 600;
-        }
+    #comments .media-detail li {
+        color: #aaaaaa;
+        font-size: 12px;
+        padding-right: 10px;
+        font-weight: 600;
+    }
 
-        #comments .media-detail a:hover {
-            text-decoration: underline;
-        }
+    #comments .media-detail a:hover {
+        text-decoration: underline;
+    }
 
-        #comments .media-detail li:last-child {
-            padding-right: 0;
-        }
+    #comments .media-detail li:last-child {
+        padding-right: 0;
+    }
 
-        #comments .media-detail li i {
-            color: #666666;
-            font-size: 15px;
-            margin-right: 10px;
-        }
+    #comments .media-detail li i {
+        color: #666666;
+        font-size: 15px;
+        margin-right: 10px;
+    }
     </style>
 </head>
 
@@ -234,7 +237,8 @@ require 'includes/dbconn.php';
         </div>
 
         <!-- Edit Modal Form-->
-        <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -289,13 +293,23 @@ require 'includes/dbconn.php';
 
         <!--Search-->
         <div class="input-group mb-3 mt-3">
-            <input type="text" class="form-control" placeholder="Search in conversation" aria-label="search-subject" aria-describedby="search-subject">
-            <button class="btn btn-primary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+            <input type="text" id="searchInput" class="form-control" placeholder="Search in conversation"
+                aria-label="search-subject" aria-describedby="search-subject">
+            <button class="btn btn-primary" id="searchButton" type="button" id="button-addon2"><i
+                    class="bi bi-search"></i></button>
         </div>
+
+        <!--<h1>Conversation Search</h1>-->
+        <!--<input type="text" id="searchInput" placeholder="Enter keyword">-->
+        <!--<button id="searchButton">Search</button>-->
+        <!--<div id="searchResults"></div>-->
+
+        <div id="searchResults"></div>
 
         <!--List of subjects-->
         <div class="btn-group mb-3">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 List of Subjects
             </button>
             <?php
@@ -332,7 +346,7 @@ require 'includes/dbconn.php';
             $posted_by = $post_row['firstname'] . " " . $post_row['lastname'];
         ?>
 
-            <?php
+        <?php
             $days = floor($post_row['TimeSpent'] / (60 * 60 * 24));
             $remainder = $post_row['TimeSpent'] % (60 * 60 * 24);
             $hours = floor($remainder / (60 * 60));
@@ -347,38 +361,31 @@ require 'includes/dbconn.php';
                 echo $minutes . ' minutes ago';
             ?>
 
-            </p>
+        </p>
 
-            <!-- Post Content -->
-            <div class="card mx-5">
+        <!-- Post Content -->
+        <div class="card mx-5">
 
-                <div class="row">
-                    <div class="col-2 m-3 float-right">
-                        <?php
-                        $query = "SELECT * FROM `post`";
-                        $query_run = mysqli_query($conn, $query);
+            <div class="row">
+                <div class="col-2 m-3 float-right">
 
-                        if (mysqli_num_rows($query_run) > 0) {
-                            foreach ($query_run as $post) {
-                        ?>
-                                <!-- Edit Post Button -->
-                                <button class="editPostBtn btn btn-warning" value="<?= $post['post_id']; ?>" data-bs-toggle="modal" data-bs-target="#exampleModalEdit"><i class="bi bi-pencil-square"></i></button>
+                    <!-- Edit Post Button -->
+                    <button class="editPostBtn btn btn-warning" value="<?= $post_row['post_id']; ?>"
+                        data-bs-toggle="modal" data-bs-target="#exampleModalEdit"><i
+                            class="bi bi-pencil-square"></i></button>
 
-                        <?php
-                            }
-                        }
-                        ?>
-                        <!-- Delete Post Button -->
-                        <a style="text-decoration:none;" href="deletepost.php<?php echo '?id=' . $id; ?>"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
-                    </div>
+                    <!-- Delete Post Button -->
+                    <a style="text-decoration:none;" href="deletepost.php<?php echo '?id=' . $id; ?>"><button
+                            class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
                 </div>
+            </div>
 
-                <div class="card-body m-5">
+            <div class="card-body m-5">
 
-                    <!-- Content of the post -->
-                    <h2 class="card-title text-center mb-5"><?php echo $post_row['section_title']; ?></h2>
+                <!-- Content of the post -->
+                <h2 class="card-title text-center mb-5"><?php echo $post_row['section_title']; ?></h2>
 
-                    <?php
+                <?php
                     include('dbconn.php');
 
                     $query = "SELECT action FROM post WHERE post_id = $id";
@@ -410,72 +417,74 @@ require 'includes/dbconn.php';
 
                     ?>
 
-                    <div class="mb-2">
-                        <?php echo $priorityStatus; ?>
-                    </div>
-                    <p class="card-title fw-bold">Posted by:
-                        <?php echo $post_row['firstname'] . " " . $post_row['lastname']; ?></p>
-                    <?php
+                <div class="mb-2">
+                    <?php echo $priorityStatus; ?>
+                </div>
+                <p class="card-title fw-bold">Posted by:
+                    <?php echo $post_row['firstname'] . " " . $post_row['lastname']; ?></p>
+                <?php
                     $dateTimeString = $post_row['date_created'];
                     $dateTime = new DateTime($dateTimeString);
                     $formattedDateTime = $dateTime->format('F d, Y g:i:s A');
                     ?>
-                    <p class="card-text"><small class="text-body-secondary"><?php echo $formattedDateTime; ?></small>
-                    </p>
-                    <p class="card-text"><?php echo $post_row['content']; ?></p>
-                    <img src="images/<?php echo $post_row['picture']; ?>" class="card-img-bottom img-thumbnail" alt="..." target="_blank">
-                    <h2 class="card-title mt-3">Summary</h2>
-                    <p class="card-text"><?php echo $post_row['summary']; ?></p>
-                </div>
+                <p class="card-text"><small class="text-body-secondary"><?php echo $formattedDateTime; ?></small>
+                </p>
+                <p class="card-text"><?php echo $post_row['content']; ?></p>
+                <img src="images/<?php echo $post_row['picture']; ?>" class="card-img-bottom img-thumbnail" alt="..."
+                    target="_blank">
+                <h2 class="card-title mt-3">Summary</h2>
+                <p class="card-text"><?php echo $post_row['summary']; ?></p>
             </div>
+        </div>
 
-            <!-- Comments Section -->
-            <div id="comments" class="card p-5 media mx-5 mt-3">
-                <h2 for="commentForm" class="form-label">Comments</h2>
-                <!--Comment-->
-                <div class="row m-2">
-                    <?php
-                    $sql = "SELECT * FROM comment INNER JOIN user ON user.user_id = comment.user_id ORDER BY comment.date_posted DESC LIMIT 10";
+        <!-- Comments Section -->
+        <div id="comments" class="card p-5 media mx-5 mt-3">
+            <h2 for="commentForm" class="form-label">Comments</h2>
+            <!--Comment-->
+            <div class="row m-2">
+                <?php
+                    $sql = "SELECT * FROM comment INNER JOIN user ON user.user_id = comment.user_id WHERE comment.post_id = '$id' ORDER BY comment.date_posted DESC LIMIT 2;";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
                     ?>
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="media">
-                                        <div class="row">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="mr-3 col-1 rounded-circle" alt="Profile Picture">
-                                            <h5 class="card-title mt-3 col-11">
-                                                <?php echo $row['firstname'] . " " . $row['lastname']; ?></h5>
-                                        </div>
-                                        <div class="media-body mt-3">
-                                            <p class="card-text"><?php echo $row['content']; ?></p>
-                                            <?php
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="row">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                    class="mr-3 col-1 rounded-circle" alt="Profile Picture">
+                                <h5 class="card-title mt-3 col-11">
+                                    <?php echo $row['firstname'] . " " . $row['lastname']; ?></h5>
+                            </div>
+                            <div class="media-body mt-3">
+                                <p class="card-text"><?php echo $row['content']; ?></p>
+                                <?php
                                             if ($row['picture'] == NULL) {
                                                 echo "";
                                             } else {
                                             ?>
-                                                <a href="images/<?php echo $row['picture']; ?>" target="_blank">
-                                                    <img class="mb-3" src="images/<?php echo $row['picture']; ?>" alt="Image Comment">
-                                                </a>
-                                            <?php
+                                <a href="images/<?php echo $row['picture']; ?>" target="_blank">
+                                    <img class="mb-3" src="images/<?php echo $row['picture']; ?>" alt="Image Comment">
+                                </a>
+                                <?php
                                             }
                                             ?>
 
-                                            <div class="card-footer bg-white">
-                                                <!--Timestamp when did this comment-->
-                                                <?php
+                                <div class="card-footer bg-white">
+                                    <!--Timestamp when did this comment-->
+                                    <?php
                                                 $dateTimeString = $row['date_posted'];
                                                 $dateTime = new DateTime($dateTimeString);
                                                 $formattedDateTime = $dateTime->format('F d, Y g:i:s A');
                                                 ?>
-                                                <small class="text-muted"><?php echo $formattedDateTime; ?></small>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <small class="text-muted"><?php echo $formattedDateTime; ?></small>
                                 </div>
                             </div>
-                    <?php
+                        </div>
+                    </div>
+                </div>
+                <?php
                         }
                     } else {
                         echo "There are no comments!";
@@ -483,43 +492,46 @@ require 'includes/dbconn.php';
                     mysqli_close($conn);
                     ?>
 
+            </div>
+
+
+            <!-- View more comments button -->
+            <button type="button" class="btn btn-outline-primary mt-4" id="viewMoreComments">View more comments</button>
+
+        </div>
+
+        <!-- Post a comment form -->
+        <div class="card mx-5 mt-5" id="container">
+            <form id="postThis" method="post">
+                <div class="mb-3 m-5">
+                    <h2 for="commentForm" class="form-label">Post a comment</h2>
+                    <textarea name="comment_content" class="form-control" id="commentForm" rows="3" cols="11"
+                        placeholder="Write a comment..." required></textarea>
+                    <br>
+
+                    <label for="imageComment">Image</label>
+                    <input type="file" name="imageComment" class="form-control" id="imageComment" />
+                    <br>
+
+                    <button type="submit" name="comment" class="btn btn-primary mb-5"><i class="bi bi-send-fill"></i>
+                        Post</button>
                 </div>
 
-
-                <!-- View more comments button -->
-                <button type="button" class="btn btn-outline-primary mt-4" id="viewMoreComments">View more comments</button>
-
-            </div>
-
-            <!-- Post a comment form -->
-            <div class="card mx-5 mt-5" id="container">
-                <form id="postThis" method="post">
-                    <div class="mb-3 m-5">
-                        <h2 for="commentForm" class="form-label">Post a comment</h2>
-                        <textarea name="comment_content" class="form-control" id="commentForm" rows="3" cols="11" placeholder="Write a comment..." required></textarea>
-                        <br>
-
-                        <label for="imageComment">Image</label>
-                        <input type="file" name="imageComment" class="form-control" id="imageComment" />
-                        <br>
-
-                        <button type="submit" name="comment" class="btn btn-primary mb-5"><i class="bi bi-send-fill"></i>
-                            Post</button>
-                    </div>
-
-                    <input type="hidden" name="id" value="<?php echo $id; ?>">
-                </form>
-            </div>
-            </br>
+                <input type="hidden" name="id" value="<?php echo $id; ?>">
+            </form>
+        </div>
+        </br>
 
         <?php } ?>
 
         <!--JS Bootstrap CDN-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
         </script>
 
 
         <script>
+        $(document).ready(function() {
             //Uploading a Post
             $(document).on('submit', '#uploadPost', function(e) {
                 e.preventDefault();
@@ -641,16 +653,30 @@ require 'includes/dbconn.php';
                 });
             });
 
-            //Show more comments
-            // $(document).ready(function {
-            //     var commentCount = 10;
-            //     $("#viewMoreComments").click(function() {
-            //         commentCount = commentCount + 5;
-            //         $("#comments").load("load-comments.php", {
-            //             commentNewCount: commentCount
-            //         });
-            //     });
-            // })
+            //AJAX for Searching
+            $('#searchButton').click(function() {
+                var keyword = $('#searchInput').val();
+                $.ajax({
+                    type: 'POST',
+                    url: 'search.php',
+                    data: {
+                        keyword: keyword
+                    },
+                    success: function(response) {
+                        $('#searchResults').html(response);
+                    }
+                });
+            });
+
+            //View more comments
+            var commentCount = 2;
+            $("#viewMoreComments").click(function() {
+                commentCount = commentCount + 2;
+                $("#comments").load("load-comments.php", {
+                    commentNewCount: commentCount
+                });
+            });
+        });
         </script>
 </body>
 
